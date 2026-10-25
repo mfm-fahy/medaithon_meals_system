@@ -70,7 +70,7 @@ export default function Scanner() {
     if (barcode) {
       debounceRef.current = setTimeout(() => {
         handleScan(barcode);
-      }, 300);
+      }, 1000);
     }
   };
 
