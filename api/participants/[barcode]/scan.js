@@ -1,48 +1,8 @@
-const mongoose = require('mongoose');
-
-const participantSchema = new mongoose.Schema({
-  registrationId: String,
-  teamId: String,
-  inviteCode: String,
-  teamName: String,
-  projectTitle: String,
-  selectedChallenge: String,
-  college: String,
-  department: String,
-  yearOfStudy: String,
-  name: String,
-  email: String,
-  phone: String,
-  role: String,
-  skills: String,
-  linkedin: String,
-  isLeader: Boolean,
-  status: String,
-  barcode: { type: String, unique: true },
-  isInside: { type: Boolean, default: false },
-  lastEntryTime: Date,
-  lastExitTime: Date,
-  entryExitLogs: [{
-    type: { type: String, enum: ['entry', 'exit'] },
-    timestamp: { type: Date, default: Date.now },
-    method: { type: String, enum: ['barcode', 'manual'] }
-  }]
-}, { timestamps: true });
-
-let Participant;
-let isConnected = false;
-
-async function connectDB() {
-  if (isConnected) return;
-  const MONGODB_URI = process.env.MONGODB_URI;
-  if (!MONGODB_URI) throw new Error('MONGODB_URI not set');
-  await mongoose.connect(MONGODB_URI);
-  isConnected = true;
-  Participant = mongoose.models.Participant || mongoose.model('Participant', participantSchema);
-}
+const { connectDB, getParticipant } = require('../../lib/db');
 
 module.exports = async (req, res) => {
   await connectDB();
+  const Participant = getParticipant();
   
   const { barcode } = req.query;
   

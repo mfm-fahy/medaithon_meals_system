@@ -1,54 +1,38 @@
-const mongoose = require('mongoose');
-
-const participantSchema = new mongoose.Schema({
-  registrationId: String,
-  teamId: String,
-  inviteCode: String,
-  teamName: String,
-  projectTitle: String,
-  selectedChallenge: String,
-  college: String,
-  department: String,
-  yearOfStudy: String,
-  name: String,
-  email: String,
-  phone: String,
-  role: String,
-  skills: String,
-  linkedin: String,
-  isLeader: Boolean,
-  status: String,
-  barcode: { type: String, unique: true },
-  isInside: { type: Boolean, default: false },
-  lastEntryTime: Date,
-  lastExitTime: Date,
-  entryExitLogs: [{
-    type: { type: String, enum: ['entry', 'exit'] },
-    timestamp: { type: Date, default: Date.now },
-    method: { type: String, enum: ['barcode', 'manual'] }
-  }]
-}, { timestamps: true });
-
-let Participant;
-let isConnected = false;
-
-async function connectDB() {
-  if (isConnected) return;
-  const MONGODB_URI = process.env.MONGODB_URI;
-  if (!MONGODB_URI) throw new Error('MONGODB_URI not set');
-  await mongoose.connect(MONGODB_URI);
-  isConnected = true;
-  Participant = mongoose.models.Participant || mongoose.model('Participant', participantSchema);
-}
+const { connectDB, getParticipant, getMeal } = require('./lib/db');
 
 module.exports = async (req, res) => {
   await connectDB();
+  const Participant = getParticipant();
+  const Meal = getMeal();
   
   if (req.method === 'GET') {
     const total = await Participant.countDocuments();
     const inside = await Participant.countDocuments({ isInside: true });
     const outside = total - inside;
-    return res.json({ total, inside, outside });
+
+    const meals = await Meal.find({ isActive: true }).sort({ date: 1, mealType: 1 });
+    const mealStats = await Promise.all(meals.map(async (meal) => {
+      const servedCount = await Participant.countDocuments({ 'foodServings.mealId': meal._id });
+      const medaithonServed = await Participant.countDocuments({ 
+        'foodServings.mealId': meal._id,
+        teamName: { $regex: /medaithon/i }
+      });
+      const totalStudents = await Participant.countDocuments({ status: 'active' });
+      const medaithonStudents = await Participant.countDocuments({ status: 'active', teamName: { $regex: /medaithon/i } });
+      return {
+        mealId: meal._id,
+        date: meal.date,
+        mealType: meal.mealType,
+        startTime: meal.startTime,
+        endTime: meal.endTime,
+        totalServed: servedCount,
+        medaithonServed,
+        totalStudents,
+        medaithonStudents
+      };
+    }));
+
+    return res.json({ total, inside, outside, mealStats });
   }
   
   res.status(405).json({ error: 'Method not allowed' });
