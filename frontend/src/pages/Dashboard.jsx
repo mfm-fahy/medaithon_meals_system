@@ -38,7 +38,7 @@ export default function Dashboard() {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard Overview</h2>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">HorizonXT 2026 Hackathon - Entry/Exit & Food Tracking</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">MEDAITHON 2026 Barcode System - Entry/Exit & Food Tracking</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -74,8 +74,8 @@ export default function Dashboard() {
                   <th className="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Time</th>
                   <th className="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Total Served</th>
                   <th className="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Total Students</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">HORIZONXT Served</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">HORIZONXT Students</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">MEDAITHON Served</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">MEDAITHON Students</th>
                 </tr>
               </thead>
               <tbody>
@@ -90,8 +90,8 @@ export default function Dashboard() {
                     <td className="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">{meal.startTime} - {meal.endTime}</td>
                     <td className="py-3 px-4 text-sm font-medium text-gray-900 dark:text-white">{meal.totalServed}</td>
                     <td className="py-3 px-4 text-sm font-medium text-gray-900 dark:text-white">{meal.totalStudents}</td>
-                    <td className="py-3 px-4 text-sm font-medium text-gray-900 dark:text-white">{meal.horizonxtServed}</td>
-                    <td className="py-3 px-4 text-sm font-medium text-gray-900 dark:text-white">{meal.horizonxtStudents}</td>
+                    <td className="py-3 px-4 text-sm font-medium text-gray-900 dark:text-white">{meal.medaithonServed}</td>
+                    <td className="py-3 px-4 text-sm font-medium text-gray-900 dark:text-white">{meal.medaithonStudents}</td>
                   </tr>
                 ))}
               </tbody>

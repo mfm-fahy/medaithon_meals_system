@@ -42,7 +42,7 @@ async function connectDB() {
 }
 
 function generateBarcode() {
-  return 'HZX' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 5).toUpperCase();
+  return 'MDT' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 5).toUpperCase();
 }
 
 module.exports = async (req, res) => {
@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
     const path = require('path');
     const fs = require('fs');
     
-    const filePath = path.join(__dirname, '../../Downloads/HORIZONXT 2026.xlsx');
+    const filePath = path.join(__dirname, '../../Downloads/MEDAITHON 2026.xlsx');
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ error: 'Excel file not found' });
     }

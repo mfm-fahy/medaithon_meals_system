@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const MONGODB_URI = (process.env.MONGODB_URI || 'mongodb://localhost:27017') + '/horizonxt';
+const MONGODB_URI = (process.env.MONGODB_URI || 'mongodb://localhost:27017') + '/medaithon-2026-barcode-system';
 
 const participantSchema = new mongoose.Schema({
   registrationId: String,
@@ -61,12 +61,12 @@ const Participant = mongoose.model('Participant', participantSchema);
 const Meal = mongoose.model('Meal', mealSchema);
 
 function generateBarcode() {
-  return 'HZX' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 5).toUpperCase();
+  return 'MDT' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 5).toUpperCase();
 }
 
 async function importExcelData() {
   try {
-    const workbook = XLSX.readFile(path.join(__dirname, '../Downloads/HORIZONXT 2026.xlsx'));
+    const workbook = XLSX.readFile(path.join(__dirname, '../Downloads/MEDAITHON 2026.xlsx'));
     let totalImported = 0;
 
     for (const sheetName of workbook.SheetNames) {
@@ -475,13 +475,8 @@ app.get('/api/participants/overview', async (req, res) => {
       'foodServings.mealId': meal._id,
       teamName: { $regex: /medaithon/i }
     });
-    const horizonxtServed = await Participant.countDocuments({ 
-      'foodServings.mealId': meal._id,
-      teamName: { $regex: /horizonxt/i }
-    });
     const totalStudents = await Participant.countDocuments({ status: 'active' });
     const medaithonStudents = await Participant.countDocuments({ status: 'active', teamName: { $regex: /medaithon/i } });
-    const horizonxtStudents = await Participant.countDocuments({ status: 'active', teamName: { $regex: /horizonxt/i } });
     return {
       mealId: meal._id,
       date: meal.date,
@@ -490,10 +485,8 @@ app.get('/api/participants/overview', async (req, res) => {
       endTime: meal.endTime,
       totalServed: servedCount,
       medaithonServed,
-      horizonxtServed,
       totalStudents,
-      medaithonStudents,
-      horizonxtStudents
+      medaithonStudents
     };
   }));
 

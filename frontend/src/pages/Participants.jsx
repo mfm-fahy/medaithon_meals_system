@@ -107,7 +107,7 @@ export default function Participants() {
       doc.text(p.barcode, x + barcodeWidth / 2, y + barcodeHeight + 3, { align: 'center' });
     });
 
-    doc.save('horizonxt-barcodes.pdf');
+    doc.save('medaithon-2026-barcodes.pdf');
   };
 
   const handleAddParticipant = async (e) => {

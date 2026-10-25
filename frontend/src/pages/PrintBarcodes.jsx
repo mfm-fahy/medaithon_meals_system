@@ -110,7 +110,7 @@ export default function PrintBarcodes() {
     });
 
     if (download) {
-      doc.save('horizonxt-barcodes.pdf');
+      doc.save('medaithon-2026-barcodes.pdf');
     } else {
       const pdfBlob = doc.output('blob');
       const url = URL.createObjectURL(pdfBlob);
@@ -260,7 +260,7 @@ export default function PrintBarcodes() {
                   >
                     <div className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-4 aspect-[3/2] flex flex-col items-center justify-between relative">
                       <div className="text-center w-full">
-                        <div className="text-xs font-bold text-blue-600 dark:text-blue-400 mb-1">HORIZONXT 2026</div>
+                        <div className="text-xs font-bold text-blue-600 dark:text-blue-400 mb-1">MEDAITHON 2026</div>
                         <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{p.teamName}</div>
                         <div className="text-sm font-semibold text-gray-900 dark:text-white truncate w-full px-1">{p.name}</div>
                         <div className="text-xs text-gray-400 dark:text-gray-500 truncate w-full px-1">{p.college}</div>
